@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import * as io from 'socket.io-client';
+import {SensorService} from '../sensor.service';
 
 @Component({
   selector: 'app-led',
@@ -7,22 +7,19 @@ import * as io from 'socket.io-client';
   styleUrls: ['./led.component.css']
 })
 export class LedComponent implements OnInit {
-  socket: SocketIOClient.Socket;
 
-  constructor() {
-    this.socket = io.connect();
-  }
+  constructor(private _sensorService: SensorService) { }
 
   ngOnInit() {
-    this.socket.emit('event1', {
+    this._sensorService.emit('event1', {
       msg: 'Client to server, can u hear me server?'
     });
-    this.socket.on('event2', (data: any) => {
+    this._sensorService.on('event2', (data: any) => {
       console.log(data.msg);
-      this.socket.emit('event3', {
+      this._sensorService.emit('event3', {
         msg: 'Yes, its working for me!'
       });
-      this.socket.on('event4', (_data: any) => {
+      this._sensorService.on('event4', (_data: any) => {
         console.log(_data.msg);
       });
     });
