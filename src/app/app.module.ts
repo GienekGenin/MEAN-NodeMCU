@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { LedComponent } from './led/led.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LedComponent
   ],
   imports: [
     BrowserModule
