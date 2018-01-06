@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node dist/server.js",
+    "start": "ng build && npm run build && node dist/server.js",
     "build": "babel server -d dist --presets es2015,stage-2",
     "test": "ng test",
     "lint": "ng lint",
