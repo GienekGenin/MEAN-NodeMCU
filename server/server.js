@@ -2,14 +2,14 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 
-let index = require('./routes/index');
-let tasks = require('./routes/tasks');
+const index = require('./routes/index');
+const tasks = require('./routes/tasks');
 
-let app = express();
-let server = require('http').Server(app);
-let io = require('socket.io')(server);
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-let port = 3000;
+const port = 3000;
 
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
 
   socket.on('event3', (data) => {
     console.log(data.msg);
-    socket.emit('event4',{
+    socket.emit('event4', {
       msg: 'Loud and clear'
     })
   });

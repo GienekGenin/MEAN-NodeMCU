@@ -8,7 +8,8 @@ import {SensorService} from '../sensor.service';
 })
 export class LedComponent implements OnInit {
 
-  constructor(private _sensorService: SensorService) { }
+  constructor(private _sensorService: SensorService) {
+  }
 
   ngOnInit() {
     this._sensorService.emit('event1', {
