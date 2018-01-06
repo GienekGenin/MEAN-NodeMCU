@@ -3,6 +3,8 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LedComponent} from './led/led.component';
 import {SensorService} from './sensor.service';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -10,7 +12,9 @@ import {SensorService} from './sensor.service';
     LedComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    HttpModule
   ],
   providers: [SensorService],
   bootstrap: [AppComponent]
