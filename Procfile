@@ -1,1 +1,1 @@
-web: node server/server -p 5000
+web: node server/server.js -p 5000

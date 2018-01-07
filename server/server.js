@@ -69,5 +69,5 @@ app.use('/api', tasks);
 app.set('port', process.env.PORT || 5000);
 
 server.listen(port, function () {
-  console.log(`Server listen on port ${port}`)
+  console.log('Server listen on port' + port)
 });
