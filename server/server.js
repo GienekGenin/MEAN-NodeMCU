@@ -10,7 +10,8 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const port = 3000;
-
+let staticPath = path.normalize(__dirname + '/../public');
+console.log(staticPath);
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
 
