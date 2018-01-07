@@ -9,7 +9,7 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-const port = 3000;
+const port = process.env.port || 5000;
 
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
@@ -66,8 +66,8 @@ app.use('/index', index);
 //Tasks page route
 app.use('/api', tasks);
 
-/*server.listen(port, function () {
-  console.log(`Server listen on port ${port}`)
-});*/
-
 app.set('port', process.env.PORT || 5000);
+
+server.listen(port, function () {
+  console.log(`Server listen on port ${port}`)
+});
