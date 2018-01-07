@@ -1,6 +1,6 @@
-import express from 'express';
-import path from 'path';
-import bodyParser from 'body-parser';
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
 const tasks = require('./routes/tasks');
@@ -10,8 +10,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const port = 3000;
-let staticPath = path.normalize(__dirname + '/../public');
-console.log(staticPath);
+
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
 
@@ -22,7 +21,8 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 //Set static folder for Angular
-app.use(express.static(path.join('../web', 'dist')));
+let staticPath = path.normalize(__dirname + '/../dist');
+app.use(express.static(staticPath));
 
 //Socket connection
 io.on('connection', (socket) => {
@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
 
 // Catch all other routes and return the index file
 app.get('/', function (req, res) {
-  res.sendFile(path.join('../web', 'dist/index.html'));
+  res.sendFile(staticPath + '/index.html');
 });
 
 //Body Parser MiddleWare

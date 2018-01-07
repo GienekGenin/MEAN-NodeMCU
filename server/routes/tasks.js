@@ -1,6 +1,6 @@
-import express from 'express';
+const express = require('express');
 let router = express.Router();
-import mongojs from 'mongojs';
+const mongojs = require('mongojs');
 
 let db = mongojs('Gennadii:1q2w120195@ds239097.mlab.com:39097/sensors', ['tasks']);
 
