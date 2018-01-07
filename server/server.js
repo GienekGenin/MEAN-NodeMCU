@@ -66,6 +66,8 @@ app.use('/index', index);
 //Tasks page route
 app.use('/api', tasks);
 
-server.listen(port, function () {
+/*server.listen(port, function () {
   console.log(`Server listen on port ${port}`)
-});
+});*/
+
+app.set('port', process.env.PORT || 3000);
