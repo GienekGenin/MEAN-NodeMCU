@@ -6,9 +6,6 @@ const index = require('./routes/index');
 const tasks = require('./routes/tasks');
 
 const app = express();
-//const server = require('http').Server(app);
-
-//const port = process.env.port || 5000;
 
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
