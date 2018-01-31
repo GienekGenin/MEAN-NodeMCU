@@ -6,10 +6,9 @@ const index = require('./routes/index');
 const tasks = require('./routes/tasks');
 
 const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+//const server = require('http').Server(app);
 
-const port = process.env.port || 5000;
+//const port = process.env.port || 5000;
 
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +23,29 @@ app.engine('html', require('ejs').renderFile);
 let staticPath = path.normalize(__dirname + '/../dist');
 app.use(express.static(staticPath));
 
+// Catch all other routes and return the index file
+app.get('/', function (req, res) {
+  res.sendFile(staticPath + '/index.html');
+});
+
+//Body Parser MiddleWare
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+//Home page route
+app.use('/index', index);
+
+//Tasks page route
+app.use('/api', tasks);
+
+app.set('port', process.env.PORT || 5000);
+
+let server = app.listen(process.env.PORT || 8080, function () {
+  let port = server.address().port;
+  console.log("App now running on port", port);
+});
+
+const io = require('socket.io')(server);
 //Socket connection
 io.on('connection', (socket) => {
   console.log('New connection made');
@@ -49,25 +71,4 @@ io.on('connection', (socket) => {
       msg: 'Loud and clear'
     })
   });
-});
-
-// Catch all other routes and return the index file
-app.get('/', function (req, res) {
-  res.sendFile(staticPath + '/index.html');
-});
-
-//Body Parser MiddleWare
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-
-//Home page route
-app.use('/index', index);
-
-//Tasks page route
-app.use('/api', tasks);
-
-app.set('port', process.env.PORT || 5000);
-
-server.listen(port, function () {
-  console.log('Server listen on port' + port)
 });
