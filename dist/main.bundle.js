@@ -144,7 +144,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/led/led.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  led works!\r\n</p>\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    led.component\r\n    Button status: {{buttonStatus}}\r\n  </p>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.buttonStatus);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -172,17 +172,21 @@ var LedComponent = (function () {
     }
     LedComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._sensorService.emit('event1', {
+        this._sensorService.emit('Client_asking', {
             msg: 'Client to server, can u hear me server?'
         });
-        this._sensorService.on('event2', function (data) {
+        this._sensorService.on('Server_asking', function (data) {
             console.log(data.msg);
-            _this._sensorService.emit('event3', {
+            _this._sensorService.emit('Client_response', {
                 msg: 'Yes, its working for me!'
             });
-            _this._sensorService.on('event4', function (_data) {
+            _this._sensorService.on('Server_response', function (_data) {
                 console.log(_data.msg);
             });
+        });
+        this._sensorService.on('Send_data', function (data) {
+            console.log(data.msg);
+            _this.buttonStatus = data.msg;
         });
     };
     LedComponent = __decorate([
@@ -272,19 +276,86 @@ var environment = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__("../../../platform-browser-dynamic/esm5/platform-browser-dynamic.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__("../../../../../src/app/app.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polyfills__ = __webpack_require__("../../../../../src/polyfills.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser_dynamic__ = __webpack_require__("../../../platform-browser-dynamic/esm5/platform-browser-dynamic.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_app_module__ = __webpack_require__("../../../../../src/app/app.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 
 
 
 
-if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production) {
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* enableProdMode */])();
+
+if (__WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */].production) {
+    Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* enableProdMode */])();
 }
-Object(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */])
+Object(__WEBPACK_IMPORTED_MODULE_2__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_3__app_app_module__["a" /* AppModule */])
     .catch(function (err) { return console.log(err); });
+
+
+/***/ }),
+
+/***/ "../../../../../src/polyfills.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_es7_reflect__ = __webpack_require__("../../../../core-js/es7/reflect.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_es7_reflect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_core_js_es7_reflect__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_zone_js_dist_zone__ = __webpack_require__("../../../../zone.js/dist/zone.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_zone_js_dist_zone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_zone_js_dist_zone__);
+/**
+ * This file includes polyfills needed by Angular and is loaded before the app.
+ * You can add your own extra polyfills to this file.
+ *
+ * This file is divided into 2 sections:
+ *   1. Browser polyfills. These are applied before loading ZoneJS and are sorted by browsers.
+ *   2. Application imports. Files imported after ZoneJS that should be loaded before your main
+ *      file.
+ *
+ * The current setup is for so-called "evergreen" browsers; the last versions of browsers that
+ * automatically update themselves. This includes Safari >= 10, Chrome >= 55 (including Opera),
+ * Edge >= 13 on the desktop, and iOS 10 and Chrome on mobile.
+ *
+ * Learn more in https://angular.io/docs/ts/latest/guide/browser-support.html
+ */
+/***************************************************************************************************
+ * BROWSER POLYFILLS
+ */
+/** IE9, IE10 and IE11 requires all of the following polyfills. **/
+// import 'core-js/es6/symbol';
+// import 'core-js/es6/object';
+// import 'core-js/es6/function';
+// import 'core-js/es6/parse-int';
+// import 'core-js/es6/parse-float';
+// import 'core-js/es6/number';
+// import 'core-js/es6/math';
+// import 'core-js/es6/string';
+// import 'core-js/es6/date';
+// import 'core-js/es6/array';
+// import 'core-js/es6/regexp';
+// import 'core-js/es6/map';
+// import 'core-js/es6/weak-map';
+// import 'core-js/es6/set';
+/** IE10 and IE11 requires the following for NgClass support on SVG elements */
+// import 'classlist.js';  // Run `npm install --save classlist.js`.
+/** IE10 and IE11 requires the following for the Reflect API. */
+// import 'core-js/es6/reflect';
+/** Evergreen browsers require these. **/
+// Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
+
+/**
+ * Required to support Web Animations `@angular/platform-browser/animations`.
+ * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
+ **/
+// import 'web-animations-js';  // Run `npm install --save web-animations-js`.
+/***************************************************************************************************
+ * Zone JS is required by default for Angular itself.
+ */
+ // Included with Angular CLI.
+/***************************************************************************************************
+ * APPLICATION IMPORTS
+ */
 
 
 /***/ }),

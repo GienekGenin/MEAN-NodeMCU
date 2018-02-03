@@ -1,3 +1,11 @@
-<p>
-  led works!
-</p>
+<div style="text-align:center">
+  <p>
+    led.component
+    Button status: {{buttonStatus}}
+  </p>
+  <script>
+    setInterval(function () {
+      console.log(this.buttonStatus);
+    }, 2000);
+  </script>
+</div>

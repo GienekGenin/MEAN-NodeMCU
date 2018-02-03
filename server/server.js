@@ -6,7 +6,7 @@ const index = require('./routes/index');
 const tasks = require('./routes/tasks');
 
 const app = express();
-
+let globalData = 0;
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
 
@@ -35,7 +35,19 @@ app.use('/index', index);
 //Tasks page route
 app.use('/api', tasks);
 
-app.set('port', process.env.PORT || 5000);
+// Handling data incoming from nodeMCU
+app.post('/data', function (req,res) {
+  globalData = req.body.buttonStatus;
+  res.send('Its a request' + req.body);
+});
+
+// Showing that data, and sending it back
+app.get('/data', function (req,res) {
+  console.log(globalData);
+  res.json(globalData);
+});
+
+app.set('port', process.env.PORT || 8080);
 
 let server = app.listen(process.env.PORT || 8080, function () {
   let port = server.address().port;
@@ -53,19 +65,24 @@ io.on('connection', (socket) => {
   * Take the data that was send to u
   * And print it in console
   */
-  socket.on('event1', (data) => {
+  socket.on('Client_asking', (data) => {
     console.log(data.msg);
   });
 
   //Emit a message when we load the browser window
-  socket.emit('event2', {
+  socket.emit('Server_asking', {
     msg: 'Server to client, do u read me? Over.'
   });
 
-  socket.on('event3', (data) => {
+  socket.on('Client_response', (data) => {
     console.log(data.msg);
-    socket.emit('event4', {
+    socket.emit('Server_response', {
       msg: 'Loud and clear'
     })
   });
+  setInterval(function () {
+    return socket.emit('Send_data', {
+      msg: globalData
+    });
+  },2000);
 });
