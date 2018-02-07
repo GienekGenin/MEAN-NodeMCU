@@ -5,6 +5,12 @@ import {LedComponent} from './led/led.component';
 import {SensorService} from './sensor.service';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: 'led', component: LedComponent },
+];
+
 
 @NgModule({
   declarations: [
@@ -14,7 +20,11 @@ import {HttpModule} from '@angular/http';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: false } // <-- debugging purposes only
+    )
   ],
   providers: [SensorService],
   bootstrap: [AppComponent]
