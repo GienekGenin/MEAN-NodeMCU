@@ -6,7 +6,12 @@ const index = require('./routes/index');
 const tasks = require('./routes/tasks');
 
 const app = express();
-let globalData = 0;
+let globalData = {
+  "Volts":0,
+  "Temp":0,
+  "L1":0,
+  "L2":0
+};
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
 
