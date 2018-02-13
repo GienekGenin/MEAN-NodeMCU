@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {SensorService} from '../sensor.service';
 
 @Component({
-  selector: 'app-led',
-  templateUrl: './led.component.html',
-  styleUrls: ['./led.component.css']
+  selector: 'app-sensor',
+  templateUrl: './sensor.component.html',
+  styleUrls: ['./sensor.component.css']
 })
-export class LedComponent implements OnInit {
-  buttonStatus;
+export class SensorComponent implements OnInit {
+  data;
   constructor(private _sensorService: SensorService) {
   }
 
@@ -24,9 +24,9 @@ export class LedComponent implements OnInit {
         console.log(_data.msg);
       });
     });
-    this._sensorService.on('Send_data', (data: any) => {
+    this._sensorService.on('Sensor', (data: any) => {
       console.log(data.msg);
-      this.buttonStatus = data.msg;
+      this.data = data.msg;
     });
   }
 }

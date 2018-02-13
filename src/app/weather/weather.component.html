@@ -1,11 +1,13 @@
 <div style="text-align:center">
   <p>
-    led.component<br>
-    Photoresistor: {{buttonStatus}}
+    Weather.component<br>
+    Temperature: {{data.Temp}}<br>
+    Pressure: <br>
   </p>
   <script>
     setInterval(function () {
-      console.log(this.buttonStatus);
+      console.log(this.data);
     }, 2000);
   </script>
 </div>
+

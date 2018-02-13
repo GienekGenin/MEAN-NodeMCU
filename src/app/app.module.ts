@@ -1,21 +1,24 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {LedComponent} from './led/led.component';
+import {SensorComponent} from './sensor/sensor.component';
 import {SensorService} from './sensor.service';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
+import { WeatherComponent } from './weather/weather.component';
 
 const appRoutes: Routes = [
-  { path: 'led', component: LedComponent },
+  { path: 'sensor', component: SensorComponent },
+  { path: 'weather', component: WeatherComponent }
 ];
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LedComponent
+    SensorComponent,
+    WeatherComponent
   ],
   imports: [
     BrowserModule,

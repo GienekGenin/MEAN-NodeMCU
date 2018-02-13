@@ -37,7 +37,7 @@ app.use('/api', tasks);
 
 // Handling data incoming from nodeMCU
 app.post('/data', function (req,res) {
-  globalData = req.body.buttonStatus;
+  globalData = req.body.data;
   res.send('Its a request' + req.body);
 });
 
@@ -81,8 +81,13 @@ io.on('connection', (socket) => {
     })
   });
   setInterval(function () {
-    return socket.emit('Send_data', {
-      msg: globalData
+    return socket.emit('Sensor', {
+      msg: {"Volts":globalData.Volts,"L1":globalData.L1,"L2":globalData.L2}
+    });
+  },2000);
+  setInterval(function () {
+    return socket.emit('Weather', {
+      msg: {"Temp":globalData.Temp}
     });
   },2000);
 });

@@ -1,0 +1,13 @@
+<div style="text-align:center">
+  <p>
+    sensor.component<br>
+    Solar sell Vout: {{data.Volts}} [ V ]<br>
+    Photoresistor_1: {{data.L1}}<br>
+    Photoresistor_2: {{data.L2}}<br>
+  </p>
+  <script>
+    setInterval(function () {
+      console.log(this.data);
+    }, 2000);
+  </script>
+</div>
