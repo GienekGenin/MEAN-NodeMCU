@@ -7,7 +7,11 @@ import {SensorService} from '../sensor.service';
   styleUrls: ['./sensor.component.css']
 })
 export class SensorComponent implements OnInit {
-  data;
+  data = {
+    'Volts': 0,
+    'L1': 0,
+    'L2': 0
+  };
   constructor(private _sensorService: SensorService) {
   }
 

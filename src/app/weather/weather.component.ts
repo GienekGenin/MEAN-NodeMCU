@@ -7,7 +7,9 @@ import {SensorService} from '../sensor.service';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit {
-  data;
+    data = {
+    'Temp': 0,
+  };
   constructor(private _sensorService: SensorService) {
   }
   ngOnInit() {

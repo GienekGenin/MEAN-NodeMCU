@@ -230,6 +230,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var SensorComponent = (function () {
     function SensorComponent(_sensorService) {
         this._sensorService = _sensorService;
+        this.data = {
+            'Volts': 0,
+            'L1': 0,
+            'L2': 0
+        };
     }
     SensorComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -286,7 +291,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/weather/weather.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\n  <p>\n    Weather.component<br>\n    Temperature: {{data.Temp}}<br>\n    Pressure: <br>\n  </p>\n  <script>\n    setInterval(function () {\n      console.log(this.data);\n    }, 2000);\n  </script>\n</div>\n\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    Weather.component<br>\r\n    Temperature: {{data.Temp}}<br>\r\n    Pressure: <br>\r\n  </p>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -311,6 +316,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var WeatherComponent = (function () {
     function WeatherComponent(_sensorService) {
         this._sensorService = _sensorService;
+        this.data = {
+            'Temp': 0,
+        };
     }
     WeatherComponent.prototype.ngOnInit = function () {
         var _this = this;
