@@ -242,56 +242,8 @@ var SensorComponent = (function () {
             'L2': 0
         };
         this.chartData = [{
-                'country': 'USA',
-                'visits': 4252
-            }, {
-                'country': 'China',
-                'visits': 1882
-            }, {
-                'country': 'Japan',
-                'visits': 1809
-            }, {
-                'country': 'Germany',
-                'visits': 1322
-            }, {
-                'country': 'UK',
-                'visits': 1122
-            }, {
-                'country': 'France',
-                'visits': 1114
-            }, {
-                'country': 'India',
-                'visits': 984
-            }, {
-                'country': 'Spain',
-                'visits': 711
-            }, {
-                'country': 'Netherlands',
-                'visits': 665
-            }, {
-                'country': 'Russia',
-                'visits': 580
-            }, {
-                'country': 'South Korea',
-                'visits': 443
-            }, {
-                'country': 'Canada',
-                'visits': 441
-            }, {
-                'country': 'Brazil',
-                'visits': 395
-            }, {
-                'country': 'Italy',
-                'visits': 386
-            }, {
-                'country': 'Australia',
-                'visits': 384
-            }, {
-                'country': 'Taiwan',
-                'visits': 338
-            }, {
-                'country': 'Poland',
-                'visits': 328
+                'Time': '0',
+                'Volts': 0
             }];
     }
     SensorComponent.prototype.ngOnInit = function () {
@@ -309,8 +261,20 @@ var SensorComponent = (function () {
             });
         });
         this._sensorService.on('Sensor', function (data) {
-            console.log(data.msg);
             _this.data = data.msg;
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            var time = h + ':' + m + ':' + s;
+            console.log('chartData: ', _this.chartData);
+            if (_this.chartData[_this.chartData.length - 1].Volts !== data.msg.Volts) {
+                _this.chartData.push({ 'Time': time, 'Volts': data.msg.Volts });
+                _this.AmCharts.updateChart(_this.chart, function () {
+                    // Change whatever properties you want
+                    _this.chart.dataProvider = _this.chartData;
+                });
+            }
         });
     };
     SensorComponent.prototype.ngAfterViewInit = function () {
@@ -318,10 +282,13 @@ var SensorComponent = (function () {
             'type': 'serial',
             'theme': 'light',
             'dataProvider': this.chartData,
-            'categoryField': 'country',
+            'categoryField': 'Time',
             'graphs': [{
-                    'valueField': 'visits',
-                    'type': 'column'
+                    'valueField': 'Volts',
+                    'type': 'line',
+                    'fillAlphas': 0,
+                    'bullet': 'round',
+                    'lineColor': '#8d1cc6'
                 }]
         });
     };

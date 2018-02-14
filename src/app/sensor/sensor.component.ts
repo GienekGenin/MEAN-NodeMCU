@@ -13,58 +13,10 @@ export class SensorComponent implements OnInit {
     'L1': 0,
     'L2': 0
   };
-  chartData = [ {
-    'country': 'USA',
-    'visits': 4252
-  }, {
-    'country': 'China',
-    'visits': 1882
-  }, {
-    'country': 'Japan',
-    'visits': 1809
-  }, {
-    'country': 'Germany',
-    'visits': 1322
-  }, {
-    'country': 'UK',
-    'visits': 1122
-  }, {
-    'country': 'France',
-    'visits': 1114
-  }, {
-    'country': 'India',
-    'visits': 984
-  }, {
-    'country': 'Spain',
-    'visits': 711
-  }, {
-    'country': 'Netherlands',
-    'visits': 665
-  }, {
-    'country': 'Russia',
-    'visits': 580
-  }, {
-    'country': 'South Korea',
-    'visits': 443
-  }, {
-    'country': 'Canada',
-    'visits': 441
-  }, {
-    'country': 'Brazil',
-    'visits': 395
-  }, {
-    'country': 'Italy',
-    'visits': 386
-  }, {
-    'country': 'Australia',
-    'visits': 384
-  }, {
-    'country': 'Taiwan',
-    'visits': 338
-  }, {
-    'country': 'Poland',
-    'visits': 328
-  } ];
+  chartData = [  {
+    'Time': '0',
+    'Volts': 0
+  }];
   private chart: AmChart;
   constructor(private _sensorService: SensorService, private AmCharts: AmChartsService) {
   }
@@ -83,8 +35,20 @@ export class SensorComponent implements OnInit {
       });
     });
     this._sensorService.on('Sensor', (data: any) => {
-      console.log(data.msg);
       this.data = data.msg;
+      const today = new Date();
+      const h = today.getHours();
+      const m = today.getMinutes();
+      const s = today.getSeconds();
+      const time = h + ':' + m + ':' + s;
+      console.log('chartData: ', this.chartData);
+      if (this.chartData[this.chartData.length - 1].Volts !== data.msg.Volts) {
+        this.chartData.push({'Time': time, 'Volts': data.msg.Volts});
+        this.AmCharts.updateChart(this.chart, () => {
+          // Change whatever properties you want
+          this.chart.dataProvider = this.chartData;
+        });
+      }
     });
   }
   ngAfterViewInit() {
@@ -92,10 +56,13 @@ export class SensorComponent implements OnInit {
       'type': 'serial',
       'theme': 'light',
       'dataProvider': this.chartData,
-      'categoryField': 'country',
+      'categoryField': 'Time',
       'graphs': [ {
-        'valueField': 'visits',
-        'type': 'column'
+        'valueField': 'Volts',
+        'type': 'line',
+        'fillAlphas': 0,
+        'bullet': 'round',
+        'lineColor': '#8d1cc6'
       }]
     });
   }
