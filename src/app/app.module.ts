@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { WeatherComponent } from './weather/weather.component';
+import {AmChartsModule} from '@amcharts/amcharts3-angular';
 
 const appRoutes: Routes = [
   { path: 'sensor', component: SensorComponent },
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
+    AmChartsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only

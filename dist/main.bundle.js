@@ -86,12 +86,14 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__weather_weather_component__ = __webpack_require__("../../../../../src/app/weather/weather.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__amcharts_amcharts3_angular__ = __webpack_require__("../../../../@amcharts/amcharts3-angular/es2015/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -119,6 +121,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_5__angular_forms__["a" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_9__amcharts_amcharts3_angular__["a" /* AmChartsModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_router__["a" /* RouterModule */].forRoot(appRoutes, { enableTracing: false } // <-- debugging purposes only
                 )
             ],
@@ -205,7 +208,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sensor/sensor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n    Solar sell Vout: {{data.Volts}} [ V ]<br>\r\n    Photoresistor_1: {{data.L1}}<br>\r\n    Photoresistor_2: {{data.L2}}<br>\r\n  </p>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n    Solar sell Vout: {{data.Volts}} [ V ]<br>\r\n    Photoresistor_1: {{data.L1}}<br>\r\n    Photoresistor_2: {{data.L2}}<br>\r\n  </p>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -216,6 +219,7 @@ module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.compo
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SensorComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sensor_service__ = __webpack_require__("../../../../../src/app/sensor.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__amcharts_amcharts3_angular__ = __webpack_require__("../../../../@amcharts/amcharts3-angular/es2015/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -227,14 +231,68 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var SensorComponent = (function () {
-    function SensorComponent(_sensorService) {
+    function SensorComponent(_sensorService, AmCharts) {
         this._sensorService = _sensorService;
+        this.AmCharts = AmCharts;
         this.data = {
             'Volts': 0,
             'L1': 0,
             'L2': 0
         };
+        this.chartData = [{
+                'country': 'USA',
+                'visits': 4252
+            }, {
+                'country': 'China',
+                'visits': 1882
+            }, {
+                'country': 'Japan',
+                'visits': 1809
+            }, {
+                'country': 'Germany',
+                'visits': 1322
+            }, {
+                'country': 'UK',
+                'visits': 1122
+            }, {
+                'country': 'France',
+                'visits': 1114
+            }, {
+                'country': 'India',
+                'visits': 984
+            }, {
+                'country': 'Spain',
+                'visits': 711
+            }, {
+                'country': 'Netherlands',
+                'visits': 665
+            }, {
+                'country': 'Russia',
+                'visits': 580
+            }, {
+                'country': 'South Korea',
+                'visits': 443
+            }, {
+                'country': 'Canada',
+                'visits': 441
+            }, {
+                'country': 'Brazil',
+                'visits': 395
+            }, {
+                'country': 'Italy',
+                'visits': 386
+            }, {
+                'country': 'Australia',
+                'visits': 384
+            }, {
+                'country': 'Taiwan',
+                'visits': 338
+            }, {
+                'country': 'Poland',
+                'visits': 328
+            }];
     }
     SensorComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -255,13 +313,30 @@ var SensorComponent = (function () {
             _this.data = data.msg;
         });
     };
+    SensorComponent.prototype.ngAfterViewInit = function () {
+        this.chart = this.AmCharts.makeChart('chartdiv', {
+            'type': 'serial',
+            'theme': 'light',
+            'dataProvider': this.chartData,
+            'categoryField': 'country',
+            'graphs': [{
+                    'valueField': 'visits',
+                    'type': 'column'
+                }]
+        });
+    };
+    SensorComponent.prototype.ngOnDestroy = function () {
+        if (this.chart) {
+            this.AmCharts.destroyChart(this.chart);
+        }
+    };
     SensorComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-sensor',
             template: __webpack_require__("../../../../../src/app/sensor/sensor.component.html"),
             styles: [__webpack_require__("../../../../../src/app/sensor/sensor.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sensor_service__["a" /* SensorService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sensor_service__["a" /* SensorService */], __WEBPACK_IMPORTED_MODULE_2__amcharts_amcharts3_angular__["b" /* AmChartsService */]])
     ], SensorComponent);
     return SensorComponent;
 }());
