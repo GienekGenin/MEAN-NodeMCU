@@ -7,7 +7,7 @@ const tasks = require('./routes/tasks');
 
 const app = express();
 let globalData = {
-  "Volts":0,
+  "Volts":4.5,
   "Temp":0,
   "L1":0,
   "L2":0

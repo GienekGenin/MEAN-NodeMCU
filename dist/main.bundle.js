@@ -237,13 +237,13 @@ var SensorComponent = (function () {
         this._sensorService = _sensorService;
         this.AmCharts = AmCharts;
         this.data = {
-            'Volts': 0,
+            'Volts': 4.5,
             'L1': 0,
             'L2': 0
         };
         this.chartData = [{
                 'Time': '0',
-                'Volts': 0
+                'Volts': 4.5
             }];
     }
     SensorComponent.prototype.ngOnInit = function () {
@@ -286,7 +286,7 @@ var SensorComponent = (function () {
             'graphs': [{
                     'valueField': 'Volts',
                     'type': 'line',
-                    'fillAlphas': 0,
+                    'fillAlphas': 0.5,
                     'bullet': 'round',
                     'lineColor': '#8d1cc6'
                 }]

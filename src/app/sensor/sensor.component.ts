@@ -9,13 +9,13 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
 })
 export class SensorComponent implements OnInit {
   data = {
-    'Volts': 0,
+    'Volts': 4.5,
     'L1': 0,
     'L2': 0
   };
   chartData = [  {
     'Time': '0',
-    'Volts': 0
+    'Volts': 4.5
   }];
   private chart: AmChart;
   constructor(private _sensorService: SensorService, private AmCharts: AmChartsService) {
@@ -60,7 +60,7 @@ export class SensorComponent implements OnInit {
       'graphs': [ {
         'valueField': 'Volts',
         'type': 'line',
-        'fillAlphas': 0,
+        'fillAlphas': 0.5,
         'bullet': 'round',
         'lineColor': '#8d1cc6'
       }]
