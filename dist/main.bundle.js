@@ -270,7 +270,8 @@ var SensorComponent = (function () {
             });
         });
         this._sensorService.on('Sensor', function (data) {
-            console.log('Sensor');
+            console.log('Sensor data: ', data.msg);
+            console.log('Chart data: ', _this.chartData);
             var index = 0;
             for (var i = 0; i < data.msg.length; i++) {
                 console.log('Sensor for');
