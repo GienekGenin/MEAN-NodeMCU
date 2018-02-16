@@ -58,7 +58,7 @@ function getDay() {
 app.post('/data', function (req, res) {
   globalData = req.body.data;
   const dataToDb = {
-    'Volts': req.body.Volts,
+    'Volts': req.body.data.Volts,
     'Time': getTime(),
     'Day': getDay()
   };
@@ -116,14 +116,14 @@ io.on('connection', (socket) => {
   firstDataTransfer();
   function firstDataTransfer() {
     db.clientData.find({'Day': getDay()}, function (err, docs) {
-      console.log(docs);
+      // console.log(docs);
       return socket.emit('First_data_transfer', {
         msg: docs
       });
     });
     setInterval(function () {
       db.clientData.find({'Day': getDay()}, function (err, docs) {
-        console.log(docs);
+        // console.log(docs);
         return socket.emit('Sensor', {
           msg: docs
         });

@@ -268,23 +268,27 @@ var SensorComponent = (function () {
                 // Change whatever properties you want
                 _this.chart.dataProvider = _this.chartData;
             });
-            /*this.chartData.forEach(function (chData) {
-              console.log(chData.Time, chData.Volts);
-              data.msg.forEach(function (dbData) {
-                console.log('dbData: ', dbData.Time, dbData.Volts); // 00:00:00
-                getHoursInt(dbData.Time);
-                getMinInt(dbData.Time);
-                getSecInt(dbData.Time);
-                // console.log('h: ', this.getHoursInt(dbData.Time));
-              });
-            });*/
-            /*if (this.chartData[this.chartData.length - 1].Volts !== data.msg.Volts) {
-              this.chartData.push({'Time': time, 'Volts': data.msg.Volts});
-              this.AmCharts.updateChart(this.chart, () => {
-                // Change whatever properties you want
-                this.chart.dataProvider = this.chartData;
-              });
-            }*/
+        });
+        this._sensorService.on('Sensor', function (data) {
+            console.log('Sensor');
+            var index = 0;
+            for (var i = 0; i < data.msg.length; i++) {
+                console.log('Sensor for');
+                // console.log('Sensor: chartData last: ', this.chartData[this.chartData.length - 1]);
+                if (_this.chartData[_this.chartData.length - 1].Time === data.msg[i].Time) {
+                    console.log('Found index');
+                    index = i;
+                    // this.chartData.push({'Time': data.msg[++i].Time, 'Volts': data.msg[++i].Volts});
+                }
+            }
+            for (var i = index + 1; i < data.msg.length; i++) {
+                console.log('In push');
+                _this.chartData.push({ 'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts });
+                _this.AmCharts.updateChart(_this.chart, function () {
+                    // Change whatever properties you want
+                    _this.chart.dataProvider = _this.chartData;
+                });
+            }
         });
     };
     SensorComponent.prototype.ngAfterViewInit = function () {

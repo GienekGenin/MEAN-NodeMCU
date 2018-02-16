@@ -44,6 +44,27 @@ export class SensorComponent implements OnInit {
         this.chart.dataProvider = this.chartData;
       });
     });
+    this._sensorService.on('Sensor', (data: any) => {
+      console.log('Sensor');
+      let index = 0;
+      for (let i = 0; i < data.msg.length; i++) {
+        console.log('Sensor for');
+        // console.log('Sensor: chartData last: ', this.chartData[this.chartData.length - 1]);
+        if (this.chartData[this.chartData.length - 1].Time === data.msg[i].Time) {
+          console.log('Found index');
+          index = i;
+          // this.chartData.push({'Time': data.msg[++i].Time, 'Volts': data.msg[++i].Volts});
+        }
+      }
+      for (let i = index + 1; i < data.msg.length; i++) {
+        console.log('In push');
+          this.chartData.push({'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts});
+          this.AmCharts.updateChart(this.chart, () => {
+            // Change whatever properties you want
+            this.chart.dataProvider = this.chartData;
+          });
+        }
+    });
   }
 
   ngAfterViewInit() {
