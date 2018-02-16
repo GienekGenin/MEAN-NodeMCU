@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const mongojs = require('mongojs');
+const db = mongojs('mongodb://Gennadii:1q2w120195@ds239097.mlab.com:39097/sensors', ['clientData']);
 
 const index = require('./routes/index');
 const tasks = require('./routes/tasks');
@@ -40,16 +42,42 @@ app.use('/index', index);
 //Tasks page route
 app.use('/api', tasks);
 
+function getTime() {
+  const today = new Date();
+  return today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+}
+
+function getDay() {
+  const today = new Date();
+  return today.getDate();
+}
+
 // Handling data incoming from nodeMCU
+// Request: {"data": {"Volts":4.33,"Temp":24.52,"L1":697.24,"L2":737.25}}
+// DB model: {"Volts": 4.33,"Time": "21:53:0",  "Day": 14}
 app.post('/data', function (req,res) {
   globalData = req.body.data;
-  res.send('Its a request' + req.body);
+  const dataToDb = {
+    'Volts': req.body.Volts,
+    'Time': getTime(),
+    'Day': getDay()
+  };
+  db.clientData.save(dataToDb, function (err, data) {
+    if(err){
+      res.send(err);
+    }
+    res.json(data);
+  });
 });
 
 // Showing that data, and sending it back
 app.get('/data', function (req,res) {
-  console.log(globalData);
-  res.json(globalData);
+  db.clientData.find(function (err, data) {
+    if(err){
+      res.send(err);
+    }
+    res.json(data);
+  });
 });
 
 app.set('port', process.env.PORT || 8080);
