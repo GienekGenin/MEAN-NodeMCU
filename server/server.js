@@ -9,10 +9,10 @@ const tasks = require('./routes/tasks');
 
 const app = express();
 let globalData = {
-  "Volts":4.5,
-  "Temp":0,
-  "L1":0,
-  "L2":0
+  "Volts": 4.5,
+  "Temp": 0,
+  "L1": 0,
+  "L2": 0
 };
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
@@ -55,7 +55,7 @@ function getDay() {
 // Handling data incoming from nodeMCU
 // Request: {"data": {"Volts":4.33,"Temp":24.52,"L1":697.24,"L2":737.25}}
 // DB model: {"Volts": 4.33,"Time": "21:53:0",  "Day": 14}
-app.post('/data', function (req,res) {
+app.post('/data', function (req, res) {
   globalData = req.body.data;
   const dataToDb = {
     'Volts': req.body.Volts,
@@ -63,7 +63,7 @@ app.post('/data', function (req,res) {
     'Day': getDay()
   };
   db.clientData.save(dataToDb, function (err, data) {
-    if(err){
+    if (err) {
       res.send(err);
     }
     res.json(data);
@@ -71,9 +71,9 @@ app.post('/data', function (req,res) {
 });
 
 // Showing that data, and sending it back
-app.get('/data', function (req,res) {
+app.get('/data', function (req, res) {
   db.clientData.find(function (err, data) {
-    if(err){
+    if (err) {
       res.send(err);
     }
     res.json(data);
@@ -114,13 +114,16 @@ io.on('connection', (socket) => {
     })
   });
   setInterval(function () {
-    return socket.emit('Sensor', {
-      msg: {"Volts":globalData.Volts,"L1":globalData.L1,"L2":globalData.L2}
+    db.clientData.find({'Day': getDay()}, function (err, docs) {
+      console.log(docs);
+      return socket.emit('Sensor', {
+        msg: docs
+      });
     });
-  },2000);
+  }, 2000);
   setInterval(function () {
     return socket.emit('Weather', {
-      msg: {"Temp":globalData.Temp}
+      msg: {"Temp": globalData.Temp}
     });
-  },2000);
+  }, 2000);
 });

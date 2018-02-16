@@ -208,7 +208,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sensor/sensor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n    Solar sell Vout: {{data.Volts}} [ V ]<br>\r\n    Photoresistor_1: {{data.L1}}<br>\r\n    Photoresistor_2: {{data.L2}}<br>\r\n  </p>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n    <!--Solar sell Vout: {{data.Volts}} [ V ]<br>-->\r\n    <!--Photoresistor_1: {{data.L1}}<br>-->\r\n    <!--Photoresistor_2: {{data.L2}}<br>-->\r\n  </p>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      // console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -236,13 +236,13 @@ var SensorComponent = (function () {
     function SensorComponent(_sensorService, AmCharts) {
         this._sensorService = _sensorService;
         this.AmCharts = AmCharts;
-        this.data = {
-            'Volts': 4.5,
-            'L1': 0,
-            'L2': 0
-        };
+        // data = {
+        //   'Volts': 4.5,
+        //   'L1': 0,
+        //   'L2': 0
+        // };
         this.chartData = [{
-                'Time': '0',
+                'Time': '0:0:0',
                 'Volts': 4.5
             }];
     }
@@ -261,20 +261,23 @@ var SensorComponent = (function () {
             });
         });
         this._sensorService.on('Sensor', function (data) {
-            _this.data = data.msg;
-            var today = new Date();
-            var h = today.getHours();
-            var m = today.getMinutes();
-            var s = today.getSeconds();
-            var time = h + ':' + m + ':' + s;
-            console.log('chartData: ', _this.chartData);
-            if (_this.chartData[_this.chartData.length - 1].Volts !== data.msg.Volts) {
-                _this.chartData.push({ 'Time': time, 'Volts': data.msg.Volts });
-                _this.AmCharts.updateChart(_this.chart, function () {
-                    // Change whatever properties you want
-                    _this.chart.dataProvider = _this.chartData;
+            _this.chartData.forEach(function (chData) {
+                console.log(chData.Time, chData.Volts);
+                data.msg.forEach(function (dbData) {
+                    console.log('dbData: ', dbData.Time, dbData.Volts); // 00:00:00
+                    getHoursInt(dbData.Time);
+                    getMinInt(dbData.Time);
+                    getSecInt(dbData.Time);
+                    // console.log('h: ', this.getHoursInt(dbData.Time));
                 });
-            }
+            });
+            /*if (this.chartData[this.chartData.length - 1].Volts !== data.msg.Volts) {
+              this.chartData.push({'Time': time, 'Volts': data.msg.Volts});
+              this.AmCharts.updateChart(this.chart, () => {
+                // Change whatever properties you want
+                this.chart.dataProvider = this.chartData;
+              });
+            }*/
         });
     };
     SensorComponent.prototype.ngAfterViewInit = function () {
@@ -308,6 +311,43 @@ var SensorComponent = (function () {
     return SensorComponent;
 }());
 
+function getHoursInt(str) {
+    console.log('Hours: ', parseInt(str, 0));
+    return parseInt(str, 0);
+}
+function getSecInt(str) {
+    var firstSemi;
+    var sStr = '';
+    for (var i = 0; i < str.length; i++) {
+        if (str[i] === ':') {
+            firstSemi = i;
+        }
+    }
+    for (var i = 0; i < str.length; i++) {
+        if (firstSemi < i) {
+            sStr = sStr + str[i];
+        }
+    }
+    console.log('Seconds: ', parseInt(sStr, 0));
+    return parseInt(sStr, 0);
+}
+function getMinInt(str) {
+    var firstSemi = 0;
+    var secondSemi;
+    for (var i = 0; i < str.length; i++) {
+        if (str[i] === ':' && firstSemi === 0) {
+            firstSemi = i;
+        }
+    }
+    for (var i = 0; i < str.length; i++) {
+        if (str[i] === ':' && firstSemi === 0) {
+            secondSemi = i;
+        }
+    }
+    var minS = str.slice(firstSemi + 1, secondSemi);
+    console.log('minS: ', parseInt(minS, 0));
+    return parseInt(minS, 0);
+}
 
 
 /***/ }),
