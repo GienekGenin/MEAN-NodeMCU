@@ -35,24 +35,14 @@ export class SensorComponent implements OnInit {
         console.log(_data.msg);
       });
     });
-    this._sensorService.on('Sensor', (data: any) => {
-      this.chartData.forEach(function (chData) {
-        console.log(chData.Time, chData.Volts);
-        data.msg.forEach(function (dbData) {
-          console.log('dbData: ', dbData.Time, dbData.Volts); // 00:00:00
-          getHoursInt(dbData.Time);
-          getMinInt(dbData.Time);
-          getSecInt(dbData.Time);
-          // console.log('h: ', this.getHoursInt(dbData.Time));
-        });
+    this._sensorService.on('First_data_transfer', (data: any) => {
+      for (let i = 0; i < data.msg.length; i++) {
+        this.chartData.push({'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts});
+      }
+      this.AmCharts.updateChart(this.chart, () => {
+        // Change whatever properties you want
+        this.chart.dataProvider = this.chartData;
       });
-      /*if (this.chartData[this.chartData.length - 1].Volts !== data.msg.Volts) {
-        this.chartData.push({'Time': time, 'Volts': data.msg.Volts});
-        this.AmCharts.updateChart(this.chart, () => {
-          // Change whatever properties you want
-          this.chart.dataProvider = this.chartData;
-        });
-      }*/
     });
   }
 

@@ -260,17 +260,24 @@ var SensorComponent = (function () {
                 console.log(_data.msg);
             });
         });
-        this._sensorService.on('Sensor', function (data) {
-            _this.chartData.forEach(function (chData) {
-                console.log(chData.Time, chData.Volts);
-                data.msg.forEach(function (dbData) {
-                    console.log('dbData: ', dbData.Time, dbData.Volts); // 00:00:00
-                    getHoursInt(dbData.Time);
-                    getMinInt(dbData.Time);
-                    getSecInt(dbData.Time);
-                    // console.log('h: ', this.getHoursInt(dbData.Time));
-                });
+        this._sensorService.on('First_data_transfer', function (data) {
+            for (var i = 0; i < data.msg.length; i++) {
+                _this.chartData.push({ 'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts });
+            }
+            _this.AmCharts.updateChart(_this.chart, function () {
+                // Change whatever properties you want
+                _this.chart.dataProvider = _this.chartData;
             });
+            /*this.chartData.forEach(function (chData) {
+              console.log(chData.Time, chData.Volts);
+              data.msg.forEach(function (dbData) {
+                console.log('dbData: ', dbData.Time, dbData.Volts); // 00:00:00
+                getHoursInt(dbData.Time);
+                getMinInt(dbData.Time);
+                getSecInt(dbData.Time);
+                // console.log('h: ', this.getHoursInt(dbData.Time));
+              });
+            });*/
             /*if (this.chartData[this.chartData.length - 1].Volts !== data.msg.Volts) {
               this.chartData.push({'Time': time, 'Volts': data.msg.Volts});
               this.AmCharts.updateChart(this.chart, () => {

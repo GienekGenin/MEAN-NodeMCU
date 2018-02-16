@@ -113,17 +113,26 @@ io.on('connection', (socket) => {
       msg: 'Loud and clear'
     })
   });
-  setInterval(function () {
+  firstDataTransfer();
+  function firstDataTransfer() {
     db.clientData.find({'Day': getDay()}, function (err, docs) {
       console.log(docs);
-      return socket.emit('Sensor', {
+      return socket.emit('First_data_transfer', {
         msg: docs
       });
     });
-  }, 2000);
-  setInterval(function () {
-    return socket.emit('Weather', {
-      msg: {"Temp": globalData.Temp}
-    });
-  }, 2000);
+    setInterval(function () {
+      db.clientData.find({'Day': getDay()}, function (err, docs) {
+        console.log(docs);
+        return socket.emit('Sensor', {
+          msg: docs
+        });
+      });
+    }, 2000);
+    setInterval(function () {
+      return socket.emit('Weather', {
+        msg: {"Temp": globalData.Temp}
+      });
+    }, 2000);
+  }
 });
