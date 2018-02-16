@@ -56,6 +56,7 @@ function getDay() {
 // Request: {"data": {"Volts":4.33,"Temp":24.52,"L1":697.24,"L2":737.25}}
 // DB model: {"Volts": 4.33,"Time": "21:53:0",  "Day": 14}
 app.post('/data', function (req, res) {
+  console.log(getTime());
   globalData = req.body.data;
   const dataToDb = {
     'Volts': req.body.data.Volts,

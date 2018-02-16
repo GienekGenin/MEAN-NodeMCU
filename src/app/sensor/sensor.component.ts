@@ -45,7 +45,8 @@ export class SensorComponent implements OnInit {
       });
     });
     this._sensorService.on('Sensor', (data: any) => {
-      console.log('Sensor');
+      console.log('Sensor data: ', data.msg);
+      console.log('Chart data: ', this.chartData);
       let index = 0;
       for (let i = 0; i < data.msg.length; i++) {
         console.log('Sensor for');
