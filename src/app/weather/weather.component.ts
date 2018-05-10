@@ -25,7 +25,7 @@ export class WeatherComponent implements OnInit {
         console.log(_data.msg);
       });
     });
-    this._sensorService.on('Weather', (data: any) => {
+    this._sensorService.on('Temperature', (data: any) => {
       console.log(data.msg);
       this.data = data.msg;
     });

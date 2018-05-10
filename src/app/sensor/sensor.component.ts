@@ -8,11 +8,9 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
   styleUrls: ['./sensor.component.css']
 })
 export class SensorComponent implements OnInit {
-  // data = {
-  //   'Volts': 4.5,
-  //   'L1': 0,
-  //   'L2': 0
-  // };
+  data = {
+    'L1': 0,
+  };
   chartData = [{
     'Time': '0:0:0',
     'Volts': 4.5

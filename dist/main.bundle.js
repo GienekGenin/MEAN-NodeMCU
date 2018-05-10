@@ -428,7 +428,7 @@ var WeatherComponent = (function () {
                 console.log(_data.msg);
             });
         });
-        this._sensorService.on('Weather', function (data) {
+        this._sensorService.on('Temperature', function (data) {
             console.log(data.msg);
             _this.data = data.msg;
         });
