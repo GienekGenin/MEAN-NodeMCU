@@ -8,11 +8,9 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
   styleUrls: ['./sensor.component.css']
 })
 export class SensorComponent implements OnInit {
-  // data = {
-  //   'Volts': 4.5,
-  //   'L1': 0,
-  //   'L2': 0
-  // };
+  data = {
+    'light': []
+  };
   chartData = [{
     'Time': '0:0:0',
     'Volts': 4.5
@@ -36,7 +34,9 @@ export class SensorComponent implements OnInit {
       });
     });
     this._sensorService.on('First_data_transfer', (data: any) => {
-      for (let i = 0; i < data.msg.length; i++) {
+      this.chartData[0].Time = data.msg[0].Time;
+      this.chartData[0].Volts = data.msg[0].Volts;
+      for (let i = 1; i < data.msg.length; i++) {
         this.chartData.push({'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts});
       }
       this.AmCharts.updateChart(this.chart, () => {
@@ -45,7 +45,8 @@ export class SensorComponent implements OnInit {
       });
     });
     this._sensorService.on('Sensor', (data: any) => {
-      console.log('Sensor');
+      console.log('Sensor data: ', data.msg);
+      console.log('Chart data: ', this.chartData);
       let index = 0;
       for (let i = 0; i < data.msg.length; i++) {
         console.log('Sensor for');
@@ -64,6 +65,10 @@ export class SensorComponent implements OnInit {
             this.chart.dataProvider = this.chartData;
           });
         }
+    });
+    this._sensorService.on('Light', (data: any) => {
+      console.log(data.msg);
+      this.data.light = data.msg.light;
     });
   }
 
@@ -88,44 +93,4 @@ export class SensorComponent implements OnInit {
       this.AmCharts.destroyChart(this.chart);
     }
   }
-}
-
-function getHoursInt(str) {
-  console.log('Hours: ', parseInt(str, 0));
-  return parseInt(str, 0);
-}
-
-function getSecInt(str) {
-  let firstSemi;
-  let sStr = '';
-  for (let i = 0; i < str.length; i++) {
-    if (str[i] === ':') {
-      firstSemi = i;
-    }
-  }
-  for (let i = 0; i < str.length; i++) {
-    if (firstSemi < i) {
-      sStr = sStr + str[i];
-    }
-  }
-  console.log('Seconds: ', parseInt(sStr, 0));
-  return parseInt(sStr, 0);
-}
-
-function getMinInt(str) {
-  let firstSemi = 0;
-  let secondSemi;
-  for (let i = 0; i < str.length; i++) {
-    if (str[i] === ':' && firstSemi === 0) {
-      firstSemi = i;
-    }
-  }
-  for (let i = 0; i < str.length; i++) {
-    if (str[i] === ':' && firstSemi === 0) {
-      secondSemi = i;
-    }
-  }
-  const minS = str.slice(firstSemi + 1, secondSemi);
-  console.log('minS: ', parseInt(minS, 0));
-  return parseInt(minS, 0);
 }

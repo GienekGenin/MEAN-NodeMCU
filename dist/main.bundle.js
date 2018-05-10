@@ -208,7 +208,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sensor/sensor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n    <!--Solar sell Vout: {{data.Volts}} [ V ]<br>-->\r\n    <!--Photoresistor_1: {{data.L1}}<br>-->\r\n    <!--Photoresistor_2: {{data.L2}}<br>-->\r\n  </p>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      // console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n  </p>\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.light[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.light[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.light[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.light[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.light[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.light[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.light[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.light[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.light[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      // console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -236,11 +236,9 @@ var SensorComponent = (function () {
     function SensorComponent(_sensorService, AmCharts) {
         this._sensorService = _sensorService;
         this.AmCharts = AmCharts;
-        // data = {
-        //   'Volts': 4.5,
-        //   'L1': 0,
-        //   'L2': 0
-        // };
+        this.data = {
+            'light': []
+        };
         this.chartData = [{
                 'Time': '0:0:0',
                 'Volts': 4.5
@@ -261,7 +259,9 @@ var SensorComponent = (function () {
             });
         });
         this._sensorService.on('First_data_transfer', function (data) {
-            for (var i = 0; i < data.msg.length; i++) {
+            _this.chartData[0].Time = data.msg[0].Time;
+            _this.chartData[0].Volts = data.msg[0].Volts;
+            for (var i = 1; i < data.msg.length; i++) {
                 _this.chartData.push({ 'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts });
             }
             _this.AmCharts.updateChart(_this.chart, function () {
@@ -270,7 +270,8 @@ var SensorComponent = (function () {
             });
         });
         this._sensorService.on('Sensor', function (data) {
-            console.log('Sensor');
+            console.log('Sensor data: ', data.msg);
+            console.log('Chart data: ', _this.chartData);
             var index = 0;
             for (var i = 0; i < data.msg.length; i++) {
                 console.log('Sensor for');
@@ -289,6 +290,10 @@ var SensorComponent = (function () {
                     _this.chart.dataProvider = _this.chartData;
                 });
             }
+        });
+        this._sensorService.on('Light', function (data) {
+            console.log(data.msg);
+            _this.data.light = data.msg.light;
         });
     };
     SensorComponent.prototype.ngAfterViewInit = function () {
@@ -322,43 +327,6 @@ var SensorComponent = (function () {
     return SensorComponent;
 }());
 
-function getHoursInt(str) {
-    console.log('Hours: ', parseInt(str, 0));
-    return parseInt(str, 0);
-}
-function getSecInt(str) {
-    var firstSemi;
-    var sStr = '';
-    for (var i = 0; i < str.length; i++) {
-        if (str[i] === ':') {
-            firstSemi = i;
-        }
-    }
-    for (var i = 0; i < str.length; i++) {
-        if (firstSemi < i) {
-            sStr = sStr + str[i];
-        }
-    }
-    console.log('Seconds: ', parseInt(sStr, 0));
-    return parseInt(sStr, 0);
-}
-function getMinInt(str) {
-    var firstSemi = 0;
-    var secondSemi;
-    for (var i = 0; i < str.length; i++) {
-        if (str[i] === ':' && firstSemi === 0) {
-            firstSemi = i;
-        }
-    }
-    for (var i = 0; i < str.length; i++) {
-        if (str[i] === ':' && firstSemi === 0) {
-            secondSemi = i;
-        }
-    }
-    var minS = str.slice(firstSemi + 1, secondSemi);
-    console.log('minS: ', parseInt(minS, 0));
-    return parseInt(minS, 0);
-}
 
 
 /***/ }),
@@ -384,7 +352,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/weather/weather.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    Weather.component<br>\r\n    Temperature: {{data.Temp}}<br>\r\n    Pressure: <br>\r\n  </p>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n    Weather.component<br>\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.temp[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.temp[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.temp[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.temp[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.temp[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.temp[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.temp[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.temp[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.temp[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -410,7 +378,7 @@ var WeatherComponent = (function () {
     function WeatherComponent(_sensorService) {
         this._sensorService = _sensorService;
         this.data = {
-            'Temp': 0,
+            'temp': [],
         };
     }
     WeatherComponent.prototype.ngOnInit = function () {
@@ -427,9 +395,9 @@ var WeatherComponent = (function () {
                 console.log(_data.msg);
             });
         });
-        this._sensorService.on('Weather', function (data) {
+        this._sensorService.on('Temperature', function (data) {
             console.log(data.msg);
-            _this.data = data.msg;
+            _this.data.temp = data.msg.temp;
         });
     };
     WeatherComponent = __decorate([

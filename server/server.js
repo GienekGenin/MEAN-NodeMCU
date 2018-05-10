@@ -2,18 +2,13 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongojs = require('mongojs');
-const db = mongojs('mongodb://Gennadii:1q2w120195@ds239097.mlab.com:39097/sensors', ['clientData']);
+const db = mongojs('mongodb://Gennadii:1q2w120195@ds239097.mlab.com:39097/sensors', ['solarInput', 'sensors']);
 
 const index = require('./routes/index');
 const tasks = require('./routes/tasks');
 
 const app = express();
-let globalData = {
-  "Volts": 4.5,
-  "Temp": 0,
-  "L1": 0,
-  "L2": 0
-};
+
 //View engine folder
 app.set('views', path.join(__dirname, 'views'));
 
@@ -52,17 +47,46 @@ function getDay() {
   return today.getDate();
 }
 
+let globalData = {
+  "Volts": 4.5,
+  "Temp": 0,
+  "L1": 0,
+  "L2": 0
+};
+
 // Handling data incoming from nodeMCU
-// Request: {"data": {"Volts":4.33,"Temp":24.52,"L1":697.24,"L2":737.25}}
+// Request: {"data": {"L1":1065.20,"L2":1064.89,"L3":1063.67,"L4":1041.72,"L5":1049.04,"L6":1060.02,"L7":1013.97,
+//                    "L8":918.82,"L9":812.09,"T1":917.60,"T2":917.60,"T3":1063.67,"T4":916.38,"T5":947.79,
+//                    "T6":1060.02,"T7":993.23,"T8":1014.88,"T9":812.09,"bc":0.22,"bv":0.00}}
 // DB model: {"Volts": 4.33,"Time": "21:53:0",  "Day": 14}
+//write sensors data in DB
+function rightSensors(msg) {
+  let counter = 0;
+  let lightArr = [];
+  let tempArr = [];
+  for (let key in msg.data){
+    ++counter;
+    if(counter>=1 && counter<= 9){
+      lightArr.push(msg.data[key]);
+    }
+    if(counter>=10 && counter<= 18){
+      tempArr.push(msg.data[key]);
+    }
+  }
+  db.sensors.update({_id: mongojs.ObjectId('5af489d1f36d28074502ec0a')}, { $set: {light: lightArr, temp: tempArr} }, function () {
+    console.log('Done');
+  });
+}
+
 app.post('/data', function (req, res) {
+  rightSensors(req.body);
   globalData = req.body.data;
   const dataToDb = {
-    'Volts': req.body.data.Volts,
+    'Volts': req.body.data.bv,
     'Time': getTime(),
     'Day': getDay()
   };
-  db.clientData.save(dataToDb, function (err, data) {
+  db.solarInput.save(dataToDb, function (err, data) {
     if (err) {
       res.send(err);
     }
@@ -72,7 +96,7 @@ app.post('/data', function (req, res) {
 
 // Showing that data, and sending it back
 app.get('/data', function (req, res) {
-  db.clientData.find(function (err, data) {
+  db.solarInput.find(function (err, data) {
     if (err) {
       res.send(err);
     }
@@ -93,11 +117,6 @@ io.on('connection', (socket) => {
   console.log('New connection made');
 
   //Test Messages
-  /*
-  * Listen to event1 coming from the client
-  * Take the data that was send to u
-  * And print it in console
-  */
   socket.on('Client_asking', (data) => {
     console.log(data.msg);
   });
@@ -114,15 +133,16 @@ io.on('connection', (socket) => {
     })
   });
   firstDataTransfer();
+
   function firstDataTransfer() {
-    db.clientData.find({'Day': getDay()}, function (err, docs) {
+    db.solarInput.find({'Day': getDay()}, function (err, docs) {
       // console.log(docs);
       return socket.emit('First_data_transfer', {
         msg: docs
       });
     });
     setInterval(function () {
-      db.clientData.find({'Day': getDay()}, function (err, docs) {
+      db.solarInput.find({'Day': getDay()}, function (err, docs) {
         // console.log(docs);
         return socket.emit('Sensor', {
           msg: docs
@@ -130,8 +150,13 @@ io.on('connection', (socket) => {
       });
     }, 2000);
     setInterval(function () {
-      return socket.emit('Weather', {
-        msg: {"Temp": globalData.Temp}
+      db.sensors.findOne(function (err, docs) {
+        socket.emit('Temperature', {
+          msg: {"temp": docs.temp}
+        });
+        socket.emit('Light', {
+          msg: {"light": docs.light}
+        })
       });
     }, 2000);
   }

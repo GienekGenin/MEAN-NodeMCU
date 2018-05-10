@@ -8,7 +8,7 @@ import {SensorService} from '../sensor.service';
 })
 export class WeatherComponent implements OnInit {
     data = {
-    'Temp': 0,
+    'temp': [],
   };
   constructor(private _sensorService: SensorService) {
   }
@@ -25,9 +25,9 @@ export class WeatherComponent implements OnInit {
         console.log(_data.msg);
       });
     });
-    this._sensorService.on('Weather', (data: any) => {
+    this._sensorService.on('Temperature', (data: any) => {
       console.log(data.msg);
-      this.data = data.msg;
+      this.data.temp = data.msg.temp;
     });
   }
 }
