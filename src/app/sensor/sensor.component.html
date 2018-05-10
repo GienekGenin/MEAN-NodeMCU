@@ -1,10 +1,49 @@
 <div style="text-align:center">
   <p>
     sensor.component<br>
-    <!--Solar sell Vout: {{data.Volts}} [ V ]<br>-->
-    <!--Photoresistor_1: {{data.L1}}<br>-->
-    <!--Photoresistor_2: {{data.L2}}<br>-->
   </p>
+  <table style="width:100%">
+    <tr>
+      <th>Sensor index</th>
+      <th>Temperature</th>
+    </tr>
+    <tr>
+      <td>T1</td>
+      <td>{{data.light[0]}}</td>
+    </tr>
+    <tr>
+      <td>T2</td>
+      <td>{{data.light[1]}}</td>
+    </tr>
+    <tr>
+      <td>T3</td>
+      <td>{{data.light[2]}}</td>
+    </tr>
+    <tr>
+      <td>T4</td>
+      <td>{{data.light[3]}}</td>
+    </tr>
+    <tr>
+      <td>T5</td>
+      <td>{{data.light[4]}}</td>
+    </tr>
+    <tr>
+      <td>T6</td>
+      <td>{{data.light[5]}}</td>
+    </tr>
+    <tr>
+      <td>T7</td>
+      <td>{{data.light[6]}}</td>
+    </tr>
+    <tr>
+      <td>T8</td>
+      <td>{{data.light[7]}}</td>
+    </tr>
+    <tr>
+      <td>T9</td>
+      <td>{{data.light[8]}}</td>
+    </tr>
+  </table>
   <div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>
   <script>
     setInterval(function () {

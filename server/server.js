@@ -153,6 +153,9 @@ io.on('connection', (socket) => {
       db.sensors.findOne(function (err, docs) {
         socket.emit('Temperature', {
           msg: {"temp": docs.temp}
+        });
+        socket.emit('Light', {
+          msg: {"light": docs.light}
         })
       });
     }, 2000);
