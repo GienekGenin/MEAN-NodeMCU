@@ -79,6 +79,7 @@ function rightSensors(msg) {
 }
 
 app.post('/data', function (req, res) {
+  console.log(req.body);
   rightSensors(req.body);
   globalData = req.body.data;
   const dataToDb = {
