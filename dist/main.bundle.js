@@ -236,11 +236,9 @@ var SensorComponent = (function () {
     function SensorComponent(_sensorService, AmCharts) {
         this._sensorService = _sensorService;
         this.AmCharts = AmCharts;
-        // data = {
-        //   'Volts': 4.5,
-        //   'L1': 0,
-        //   'L2': 0
-        // };
+        this.data = {
+            'L1': 0,
+        };
         this.chartData = [{
                 'Time': '0:0:0',
                 'Volts': 4.5
@@ -385,7 +383,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/weather/weather.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    Weather.component<br>\r\n    Temperature: {{data.Temp}}<br>\r\n    Pressure: <br>\r\n  </p>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    Weather.component<br>\r\n    Temperature: {{data.temp[0]}}<br>\r\n    Pressure: <br>\r\n  </p>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -411,7 +409,7 @@ var WeatherComponent = (function () {
     function WeatherComponent(_sensorService) {
         this._sensorService = _sensorService;
         this.data = {
-            'Temp': 0,
+            'temp': [],
         };
     }
     WeatherComponent.prototype.ngOnInit = function () {
@@ -430,7 +428,7 @@ var WeatherComponent = (function () {
         });
         this._sensorService.on('Temperature', function (data) {
             console.log(data.msg);
-            _this.data = data.msg;
+            _this.data.temp = data.msg.temp;
         });
     };
     WeatherComponent = __decorate([

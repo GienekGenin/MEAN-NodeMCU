@@ -77,6 +77,7 @@ function rightSensors(msg) {
     console.log('Done');
   });
 }
+
 app.post('/data', function (req, res) {
   rightSensors(req.body);
   globalData = req.body.data;
@@ -149,8 +150,10 @@ io.on('connection', (socket) => {
       });
     }, 2000);
     setInterval(function () {
-      return socket.emit('Temperature', {
-        msg: {"Temp": globalData.T1}
+      db.sensors.findOne(function (err, docs) {
+        socket.emit('Temperature', {
+          msg: {"temp": docs.temp}
+        })
       });
     }, 2000);
   }
