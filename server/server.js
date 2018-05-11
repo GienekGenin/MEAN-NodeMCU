@@ -78,6 +78,11 @@ function rightSensors(msg) {
   });
 }
 
+app.post('/string', function (req, res) {
+  console.log(req.body);
+  res.json(req.body);
+});
+
 app.post('/data', function (req, res) {
   console.log(req.body);
   rightSensors(req.body);
