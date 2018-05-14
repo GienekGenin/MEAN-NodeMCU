@@ -13,7 +13,7 @@ export class SensorComponent implements OnInit {
     'temp': []
   };
   chartData = [{
-    'Time': '0:0:0',
+    'Time': '0',
     'Volts': 4.5
   }];
   private chart: AmChart;

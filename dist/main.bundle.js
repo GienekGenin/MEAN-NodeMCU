@@ -318,7 +318,7 @@ var SensorComponent = (function () {
             'temp': []
         };
         this.chartData = [{
-                'Time': '0:0:0',
+                'Time': '0',
                 'Volts': 4.5
             }];
     }
