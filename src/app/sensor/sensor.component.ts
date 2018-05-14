@@ -18,11 +18,19 @@ export class SensorComponent implements OnInit {
     'Time': '0',
     'Volts': 0
   }];
+  session = false;
+  nextSessionIndex: number;
+  lastSessionIndex: number;
   private chart: AmChart;
 
   constructor(private _sensorService: SensorService, private AmCharts: AmChartsService) {
   }
 
+  setSession(status) {
+    this._sensorService.emit('setSession', {
+      msg: this.session = status
+    });
+  }
   ngOnInit() {
     this._sensorService.emit('Client_asking', {
       msg: 'Client to server, can u hear me server?'

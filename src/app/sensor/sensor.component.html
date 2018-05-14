@@ -62,8 +62,8 @@
     </tr>
   </table>
   <div>
-    <button>Start session</button>
-    <button>Stop session</button>
+    <button (click)="setSession(true)">Start session</button>
+    <button (click)="setSession(false)">Stop session</button>
   </div>
   <div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>
 </div>

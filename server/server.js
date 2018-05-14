@@ -79,20 +79,26 @@ function rightSensors(msg) {
   });
 }
 
+let session = false;
+
 app.post('/data', function (req, res) {
   console.log(req.body);
   rightSensors(req.body);
-  const dataToDb = {
-    'Volts': req.body.data.bv,
-    'Time': getTime(),
-    'Day': getDay()
-  };
-  db.solarInput.save(dataToDb, function (err, data) {
-    if (err) {
-      res.send(err);
-    }
-    res.json(data);
-  });
+  if (session) {
+    const dataToDb = {
+      'Volts': req.body.data.bv,
+      'Time': getTime(),
+      'Day': getDay()
+    };
+    db.solarInput.save(dataToDb, function (err, data) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(data);
+    });
+  } else {
+    res.json(req.body.data);
+  }
 });
 
 // Showing that data, and sending it back
@@ -136,6 +142,10 @@ io.on('connection', (socket) => {
   socket.on('Init data', (data) => {
     console.log(data.msg);
     firstDataTransfer();
+  });
+  socket.on('setSession', (data) => {
+    console.log(`Toggle session: ${data.msg}`);
+    session = data.msg;
   });
 
   function firstDataTransfer() {
