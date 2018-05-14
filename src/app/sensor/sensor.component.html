@@ -61,9 +61,19 @@
       <td>{{data.bc}}</td>
     </tr>
   </table>
-  <div>
-    <button (click)="setSession(true)">Start session</button>
-    <button (click)="setSession(false)">Stop session</button>
-  </div>
+  <table style="width:100%">
+    <tr>
+      <td>
+        <button (click)="setSession(true)">Start session</button>
+      </td>
+      <td>Next session: {{sessionIndex.next}}</td>
+    </tr>
+    <tr>
+      <td>
+        <button (click)="setSession(false)">Stop session</button>
+      </td>
+      <td>Current session {{sessionIndex.current}}</td>
+    </tr>
+  </table>
   <div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>
 </div>
