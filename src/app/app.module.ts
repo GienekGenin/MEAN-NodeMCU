@@ -6,12 +6,12 @@ import {SensorService} from './sensor.service';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { WeatherComponent } from './weather/weather.component';
+import { AboutComponent } from './about/about.component';
 import {AmChartsModule} from '@amcharts/amcharts3-angular';
 
 const appRoutes: Routes = [
   { path: 'sensor', component: SensorComponent },
-  { path: 'weather', component: WeatherComponent }
+  { path: 'about', component: AboutComponent }
 ];
 
 
@@ -19,7 +19,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     SensorComponent,
-    WeatherComponent
+    AboutComponent
   ],
   imports: [
     BrowserModule,
