@@ -10,7 +10,9 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
 export class SensorComponent implements OnInit {
   data = {
     'light': [],
-    'temp': []
+    'temp': [],
+    'bv': 0,
+    'bc': 0
   };
   chartData = [{
     'Time': '0',
@@ -74,6 +76,8 @@ export class SensorComponent implements OnInit {
       console.log(data.msg);
       this.data.light = data.msg.light;
       this.data.temp = data.msg.temp;
+      this.data.bv = data.msg.bv;
+      this.data.bc = data.msg.bc;
     });
   }
 

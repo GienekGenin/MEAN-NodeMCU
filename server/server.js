@@ -47,13 +47,6 @@ function getDay() {
   return today.getDate();
 }
 
-let globalData = {
-  "Volts": 4.5,
-  "Temp": 0,
-  "L1": 0,
-  "L2": 0
-};
-
 // Handling data incoming from nodeMCU
 // Request: {"data": {"L1":1065.20,"L2":1064.89,"L3":1063.67,"L4":1041.72,"L5":1049.04,"L6":1060.02,"L7":1013.97,
 //                    "L8":918.82,"L9":812.09,"T1":917.60,"T2":917.60,"T3":1063.67,"T4":916.38,"T5":947.79,
@@ -64,29 +57,31 @@ function rightSensors(msg) {
   let counter = 0;
   let lightArr = [];
   let tempArr = [];
-  for (let key in msg.data){
+  for (let key in msg.data) {
     ++counter;
-    if(counter>=1 && counter<= 9){
+    if (counter >= 1 && counter <= 9) {
       lightArr.push(msg.data[key]);
     }
-    if(counter>=10 && counter<= 18){
+    if (counter >= 10 && counter <= 18) {
       tempArr.push(msg.data[key]);
     }
   }
-  db.sensors.update({_id: mongojs.ObjectId('5af489d1f36d28074502ec0a')}, { $set: {light: lightArr, temp: tempArr} }, function () {
+  console.log(msg.data.bv);
+  db.sensors.update({_id: mongojs.ObjectId('5af489d1f36d28074502ec0a')}, {
+    $set: {
+      light: lightArr,
+      temp: tempArr,
+      bv: msg.data.bv,
+      bc: msg.data.bc
+    }
+  }, function () {
     console.log('Done');
   });
 }
 
-app.post('/string', function (req, res) {
-  console.log(req.body);
-  res.json(req.body);
-});
-
 app.post('/data', function (req, res) {
   console.log(req.body);
   rightSensors(req.body);
-  globalData = req.body.data;
   const dataToDb = {
     'Volts': req.body.data.bv,
     'Time': getTime(),
@@ -142,6 +137,7 @@ io.on('connection', (socket) => {
     console.log(data.msg);
     firstDataTransfer();
   });
+
   function firstDataTransfer() {
     db.solarInput.find({'Day': getDay()}, function (err, docs) {
       return socket.emit('First_data_transfer', {
@@ -159,7 +155,7 @@ io.on('connection', (socket) => {
     setInterval(function () {
       db.sensors.findOne(function (err, docs) {
         socket.emit('Sensors data', {
-          msg: {"temp": docs.temp,"light": docs.light}
+          msg: {"temp": docs.temp, "light": docs.light, "bv": docs.bv, "bc": docs.bc}
         });
       });
     }, 2000);
