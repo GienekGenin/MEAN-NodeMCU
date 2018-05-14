@@ -138,11 +138,12 @@ io.on('connection', (socket) => {
       msg: 'Loud and clear'
     })
   });
-  firstDataTransfer();
-
+  socket.on('Init data', (data) => {
+    console.log(data.msg);
+    firstDataTransfer();
+  });
   function firstDataTransfer() {
     db.solarInput.find({'Day': getDay()}, function (err, docs) {
-      // console.log(docs);
       return socket.emit('First_data_transfer', {
         msg: docs
       });

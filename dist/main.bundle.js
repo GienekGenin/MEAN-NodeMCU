@@ -65,19 +65,6 @@ var AboutComponent = (function () {
         this._sensorService = _sensorService;
     }
     AboutComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._sensorService.emit('Client_asking', {
-            msg: 'Client to server, can u hear me server?'
-        });
-        this._sensorService.on('Server_asking', function (data) {
-            console.log(data.msg);
-            _this._sensorService.emit('Client_response', {
-                msg: 'Yes, its working for me!'
-            });
-            _this._sensorService.on('Server_response', function (_data) {
-                console.log(_data.msg);
-            });
-        });
     };
     AboutComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -97,7 +84,7 @@ var AboutComponent = (function () {
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome\r\n  </h1>\r\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\r\n  <nav>\r\n    <a routerLink=\"/sensor\" routerLinkActive=\"active\">Sensors data</a>\r\n    <a routerLink=\"/about\" routerLinkActive=\"active\">About project</a>\r\n  </nav>\r\n</div>\r\n<router-outlet></router-outlet>\r\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome\r\n  </h1>\r\n  <img width=\"630\" alt=\"IOT Logo\" src=\"../assets/img/IOT.png\">\r\n  <nav>\r\n    <a routerLink=\"/sensor\" routerLinkActive=\"active\">Sensors data</a>\r\n    <a routerLink=\"/about\" routerLinkActive=\"active\">About project</a>\r\n  </nav>\r\n</div>\r\n<router-outlet></router-outlet>\r\n"
 
 /***/ }),
 
@@ -319,7 +306,7 @@ var SensorComponent = (function () {
         };
         this.chartData = [{
                 'Time': '0',
-                'Volts': 4.5
+                'Volts': 0
             }];
     }
     SensorComponent.prototype.ngOnInit = function () {
@@ -336,10 +323,13 @@ var SensorComponent = (function () {
                 console.log(_data.msg);
             });
         });
+        this._sensorService.emit('Init data', {
+            msg: 'Init data'
+        });
         this._sensorService.on('First_data_transfer', function (data) {
-            _this.chartData[0].Time = data.msg[0].Time;
-            _this.chartData[0].Volts = data.msg[0].Volts;
             for (var i = 1; i < data.msg.length; i++) {
+                _this.chartData[0].Time = data.msg[0].Time;
+                _this.chartData[0].Volts = data.msg[0].Volts;
                 _this.chartData.push({ 'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts });
             }
             _this.AmCharts.updateChart(_this.chart, function () {
@@ -380,13 +370,14 @@ var SensorComponent = (function () {
             'type': 'serial',
             'theme': 'light',
             'dataProvider': this.chartData,
+            'color': '#111111',
             'categoryField': 'Time',
             'graphs': [{
                     'valueField': 'Volts',
                     'type': 'line',
                     'fillAlphas': 0.5,
                     'bullet': 'round',
-                    'lineColor': '#8d1cc6'
+                    'lineColor': '#8d1cc6',
                 }]
         });
     };

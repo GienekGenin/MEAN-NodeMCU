@@ -14,7 +14,7 @@ export class SensorComponent implements OnInit {
   };
   chartData = [{
     'Time': '0',
-    'Volts': 4.5
+    'Volts': 0
   }];
   private chart: AmChart;
 
@@ -34,10 +34,13 @@ export class SensorComponent implements OnInit {
         console.log(_data.msg);
       });
     });
+    this._sensorService.emit('Init data', {
+      msg: 'Init data'
+    });
     this._sensorService.on('First_data_transfer', (data: any) => {
-      this.chartData[0].Time = data.msg[0].Time;
-      this.chartData[0].Volts = data.msg[0].Volts;
       for (let i = 1; i < data.msg.length; i++) {
+        this.chartData[0].Time = data.msg[0].Time;
+        this.chartData[0].Volts = data.msg[0].Volts;
         this.chartData.push({'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts});
       }
       this.AmCharts.updateChart(this.chart, () => {
@@ -60,12 +63,12 @@ export class SensorComponent implements OnInit {
       }
       for (let i = index + 1; i < data.msg.length; i++) {
         console.log('In push');
-          this.chartData.push({'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts});
-          this.AmCharts.updateChart(this.chart, () => {
-            // Change whatever properties you want
-            this.chart.dataProvider = this.chartData;
-          });
-        }
+        this.chartData.push({'Time': data.msg[i].Time, 'Volts': data.msg[i].Volts});
+        this.AmCharts.updateChart(this.chart, () => {
+          // Change whatever properties you want
+          this.chart.dataProvider = this.chartData;
+        });
+      }
     });
     this._sensorService.on('Sensors data', (data: any) => {
       console.log(data.msg);
@@ -79,13 +82,14 @@ export class SensorComponent implements OnInit {
       'type': 'serial',
       'theme': 'light',
       'dataProvider': this.chartData,
+      'color': '#111111',
       'categoryField': 'Time',
       'graphs': [{
         'valueField': 'Volts',
         'type': 'line',
         'fillAlphas': 0.5,
         'bullet': 'round',
-        'lineColor': '#8d1cc6'
+        'lineColor': '#8d1cc6',
       }]
     });
   }
