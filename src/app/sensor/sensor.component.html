@@ -51,5 +51,29 @@
       <td>{{data.temp[8]}}</td>
     </tr>
   </table>
+  <table style="width:100%">
+    <tr>
+      <th>Instant Battery Voltage</th>
+      <th>Instant Battery Current</th>
+    </tr>
+    <tr>
+      <td>{{data.bv}}</td>
+      <td>{{data.bc}}</td>
+    </tr>
+  </table>
+  <table style="width:100%">
+    <tr>
+      <td>
+        <button (click)="setSession(true)">Start session</button>
+      </td>
+      <td>Next session: {{sessionIndex.next}}</td>
+    </tr>
+    <tr>
+      <td>
+        <button (click)="setSession(false)">Stop session</button>
+      </td>
+      <td>Current session {{sessionIndex.current}}</td>
+    </tr>
+  </table>
   <div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>
 </div>

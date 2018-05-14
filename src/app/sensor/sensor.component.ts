@@ -10,15 +10,34 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
 export class SensorComponent implements OnInit {
   data = {
     'light': [],
-    'temp': []
+    'temp': [],
+    'bv': 0,
+    'bc': 0
   };
   chartData = [{
     'Time': '0',
     'Volts': 0
   }];
+  session = false;
+  sessionIndex = {
+    current: 0,
+    next: 0
+  };
+  nextSessionIndex: number;
+  lastSessionIndex = 0;
   private chart: AmChart;
 
   constructor(private _sensorService: SensorService, private AmCharts: AmChartsService) {
+  }
+
+  setSession(status) {
+    if (status) {
+      ++this.sessionIndex.current;
+      this.sessionIndex.next = this.sessionIndex.current + 1;
+    }
+    this._sensorService.emit('setSession', {
+      msg: this.session = status
+    });
   }
 
   ngOnInit() {
@@ -74,6 +93,8 @@ export class SensorComponent implements OnInit {
       console.log(data.msg);
       this.data.light = data.msg.light;
       this.data.temp = data.msg.temp;
+      this.data.bv = data.msg.bv;
+      this.data.bc = data.msg.bc;
     });
   }
 
