@@ -9,7 +9,8 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
 })
 export class SensorComponent implements OnInit {
   data = {
-    'light': []
+    'light': [],
+    'temp': []
   };
   chartData = [{
     'Time': '0:0:0',
@@ -44,7 +45,7 @@ export class SensorComponent implements OnInit {
         this.chart.dataProvider = this.chartData;
       });
     });
-    this._sensorService.on('Sensor', (data: any) => {
+    this._sensorService.on('Battery voltage', (data: any) => {
       console.log('Sensor data: ', data.msg);
       console.log('Chart data: ', this.chartData);
       let index = 0;
@@ -66,9 +67,10 @@ export class SensorComponent implements OnInit {
           });
         }
     });
-    this._sensorService.on('Light', (data: any) => {
+    this._sensorService.on('Sensors data', (data: any) => {
       console.log(data.msg);
       this.data.light = data.msg.light;
+      this.data.temp = data.msg.temp;
     });
   }
 

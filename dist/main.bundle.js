@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 /***/ "../../../../../src/app/about/about.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.temp[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.temp[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.temp[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.temp[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.temp[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.temp[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.temp[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.temp[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.temp[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  About\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -63,9 +63,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AboutComponent = (function () {
     function AboutComponent(_sensorService) {
         this._sensorService = _sensorService;
-        this.data = {
-            'temp': [],
-        };
     }
     AboutComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -80,10 +77,6 @@ var AboutComponent = (function () {
             _this._sensorService.on('Server_response', function (_data) {
                 console.log(_data.msg);
             });
-        });
-        this._sensorService.on('Temperature', function (data) {
-            console.log(data.msg);
-            _this.data.temp = data.msg.temp;
         });
     };
     AboutComponent = __decorate([
@@ -274,7 +267,7 @@ var SensorService = (function () {
 /***/ "../../../../../src/app/sensor/sensor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.light[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.light[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.light[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.light[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.light[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.light[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.light[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.light[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.light[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      // console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Light</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>1</td>\r\n      <td>{{data.light[0]}}</td>\r\n      <td>{{data.temp[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>2</td>\r\n      <td>{{data.light[1]}}</td>\r\n      <td>{{data.temp[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>3</td>\r\n      <td>{{data.light[2]}}</td>\r\n      <td>{{data.temp[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>4</td>\r\n      <td>{{data.light[3]}}</td>\r\n      <td>{{data.temp[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>5</td>\r\n      <td>{{data.light[4]}}</td>\r\n      <td>{{data.temp[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>6</td>\r\n      <td>{{data.light[5]}}</td>\r\n      <td>{{data.temp[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>7</td>\r\n      <td>{{data.light[6]}}</td>\r\n      <td>{{data.temp[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>8</td>\r\n      <td>{{data.light[7]}}</td>\r\n      <td>{{data.temp[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>9</td>\r\n      <td>{{data.light[8]}}</td>\r\n      <td>{{data.temp[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -321,7 +314,8 @@ var SensorComponent = (function () {
         this._sensorService = _sensorService;
         this.AmCharts = AmCharts;
         this.data = {
-            'light': []
+            'light': [],
+            'temp': []
         };
         this.chartData = [{
                 'Time': '0:0:0',
@@ -353,7 +347,7 @@ var SensorComponent = (function () {
                 _this.chart.dataProvider = _this.chartData;
             });
         });
-        this._sensorService.on('Sensor', function (data) {
+        this._sensorService.on('Battery voltage', function (data) {
             console.log('Sensor data: ', data.msg);
             console.log('Chart data: ', _this.chartData);
             var index = 0;
@@ -375,9 +369,10 @@ var SensorComponent = (function () {
                 });
             }
         });
-        this._sensorService.on('Light', function (data) {
+        this._sensorService.on('Sensors data', function (data) {
             console.log(data.msg);
             _this.data.light = data.msg.light;
+            _this.data.temp = data.msg.temp;
         });
     };
     SensorComponent.prototype.ngAfterViewInit = function () {

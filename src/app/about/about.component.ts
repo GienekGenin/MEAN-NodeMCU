@@ -7,9 +7,7 @@ import {SensorService} from '../sensor.service';
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit {
-    data = {
-    'temp': [],
-  };
+
   constructor(private _sensorService: SensorService) {
   }
   ngOnInit() {
@@ -24,10 +22,6 @@ export class AboutComponent implements OnInit {
       this._sensorService.on('Server_response', (_data: any) => {
         console.log(_data.msg);
       });
-    });
-    this._sensorService.on('Temperature', (data: any) => {
-      console.log(data.msg);
-      this.data.temp = data.msg.temp;
     });
   }
 }

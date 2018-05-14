@@ -150,19 +150,16 @@ io.on('connection', (socket) => {
     setInterval(function () {
       db.solarInput.find({'Day': getDay()}, function (err, docs) {
         // console.log(docs);
-        return socket.emit('Sensor', {
+        return socket.emit('Battery voltage', {
           msg: docs
         });
       });
     }, 2000);
     setInterval(function () {
       db.sensors.findOne(function (err, docs) {
-        socket.emit('Temperature', {
-          msg: {"temp": docs.temp}
+        socket.emit('Sensors data', {
+          msg: {"temp": docs.temp,"light": docs.light}
         });
-        socket.emit('Light', {
-          msg: {"light": docs.light}
-        })
       });
     }, 2000);
   }
