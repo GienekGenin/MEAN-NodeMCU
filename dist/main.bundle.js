@@ -17,6 +17,90 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 
 /***/ }),
 
+/***/ "../../../../../src/app/about/about.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/about/about.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div style=\"text-align:center\">\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.temp[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.temp[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.temp[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.temp[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.temp[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.temp[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.temp[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.temp[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.temp[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/about/about.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AboutComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sensor_service__ = __webpack_require__("../../../../../src/app/sensor.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AboutComponent = (function () {
+    function AboutComponent(_sensorService) {
+        this._sensorService = _sensorService;
+        this.data = {
+            'temp': [],
+        };
+    }
+    AboutComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._sensorService.emit('Client_asking', {
+            msg: 'Client to server, can u hear me server?'
+        });
+        this._sensorService.on('Server_asking', function (data) {
+            console.log(data.msg);
+            _this._sensorService.emit('Client_response', {
+                msg: 'Yes, its working for me!'
+            });
+            _this._sensorService.on('Server_response', function (_data) {
+                console.log(_data.msg);
+            });
+        });
+        this._sensorService.on('Temperature', function (data) {
+            console.log(data.msg);
+            _this.data.temp = data.msg.temp;
+        });
+    };
+    AboutComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-weather',
+            template: __webpack_require__("../../../../../src/app/about/about.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/about/about.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sensor_service__["a" /* SensorService */]])
+    ], AboutComponent);
+    return AboutComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/app.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -38,7 +122,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome\r\n  </h1>\r\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\r\n  <nav>\r\n    <a routerLink=\"/sensor\" routerLinkActive=\"active\">Sensor Component</a>\r\n    <a routerLink=\"/weather\" routerLinkActive=\"active\">Weather Component</a>\r\n  </nav>\r\n</div>\r\n<router-outlet></router-outlet>\r\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome\r\n  </h1>\r\n  <img width=\"300\" alt=\"Angular Logo\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\">\r\n  <nav>\r\n    <a routerLink=\"/sensor\" routerLinkActive=\"active\">Sensors data</a>\r\n    <a routerLink=\"/about\" routerLinkActive=\"active\">About project</a>\r\n  </nav>\r\n</div>\r\n<router-outlet></router-outlet>\r\n"
 
 /***/ }),
 
@@ -85,7 +169,7 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__weather_weather_component__ = __webpack_require__("../../../../../src/app/weather/weather.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__about_about_component__ = __webpack_require__("../../../../../src/app/about/about.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__amcharts_amcharts3_angular__ = __webpack_require__("../../../../@amcharts/amcharts3-angular/es2015/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -105,7 +189,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 var appRoutes = [
     { path: 'sensor', component: __WEBPACK_IMPORTED_MODULE_3__sensor_sensor_component__["a" /* SensorComponent */] },
-    { path: 'weather', component: __WEBPACK_IMPORTED_MODULE_8__weather_weather_component__["a" /* WeatherComponent */] }
+    { path: 'about', component: __WEBPACK_IMPORTED_MODULE_8__about_about_component__["a" /* AboutComponent */] }
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -115,7 +199,7 @@ var AppModule = (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__sensor_sensor_component__["a" /* SensorComponent */],
-                __WEBPACK_IMPORTED_MODULE_8__weather_weather_component__["a" /* WeatherComponent */]
+                __WEBPACK_IMPORTED_MODULE_8__about_about_component__["a" /* AboutComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -208,7 +292,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sensor/sensor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"text-align:center\">\r\n  <p>\r\n    sensor.component<br>\r\n  </p>\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.light[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.light[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.light[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.light[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.light[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.light[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.light[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.light[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.light[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      // console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
+module.exports = "<div style=\"text-align:center\">\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.light[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.light[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.light[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.light[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.light[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.light[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.light[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.light[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.light[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <div id=\"chartdiv\" [style.width.%]=\"100\" [style.height.px]=\"500\"></div>\r\n  <script>\r\n    setInterval(function () {\r\n      // console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -325,90 +409,6 @@ var SensorComponent = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sensor_service__["a" /* SensorService */], __WEBPACK_IMPORTED_MODULE_2__amcharts_amcharts3_angular__["b" /* AmChartsService */]])
     ], SensorComponent);
     return SensorComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/weather/weather.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/weather/weather.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div style=\"text-align:center\">\r\n    Weather.component<br>\r\n  <table style=\"width:100%\">\r\n    <tr>\r\n      <th>Sensor index</th>\r\n      <th>Temperature</th>\r\n    </tr>\r\n    <tr>\r\n      <td>T1</td>\r\n      <td>{{data.temp[0]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T2</td>\r\n      <td>{{data.temp[1]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T3</td>\r\n      <td>{{data.temp[2]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T4</td>\r\n      <td>{{data.temp[3]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T5</td>\r\n      <td>{{data.temp[4]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T6</td>\r\n      <td>{{data.temp[5]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T7</td>\r\n      <td>{{data.temp[6]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T8</td>\r\n      <td>{{data.temp[7]}}</td>\r\n    </tr>\r\n    <tr>\r\n      <td>T9</td>\r\n      <td>{{data.temp[8]}}</td>\r\n    </tr>\r\n  </table>\r\n  <script>\r\n    setInterval(function () {\r\n      console.log(this.data);\r\n    }, 2000);\r\n  </script>\r\n</div>\r\n\r\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/weather/weather.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WeatherComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sensor_service__ = __webpack_require__("../../../../../src/app/sensor.service.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var WeatherComponent = (function () {
-    function WeatherComponent(_sensorService) {
-        this._sensorService = _sensorService;
-        this.data = {
-            'temp': [],
-        };
-    }
-    WeatherComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._sensorService.emit('Client_asking', {
-            msg: 'Client to server, can u hear me server?'
-        });
-        this._sensorService.on('Server_asking', function (data) {
-            console.log(data.msg);
-            _this._sensorService.emit('Client_response', {
-                msg: 'Yes, its working for me!'
-            });
-            _this._sensorService.on('Server_response', function (_data) {
-                console.log(_data.msg);
-            });
-        });
-        this._sensorService.on('Temperature', function (data) {
-            console.log(data.msg);
-            _this.data.temp = data.msg.temp;
-        });
-    };
-    WeatherComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-weather',
-            template: __webpack_require__("../../../../../src/app/weather/weather.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/weather/weather.component.css")]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sensor_service__["a" /* SensorService */]])
-    ], WeatherComponent);
-    return WeatherComponent;
 }());
 
 

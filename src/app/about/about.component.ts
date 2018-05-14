@@ -3,10 +3,10 @@ import {SensorService} from '../sensor.service';
 
 @Component({
   selector: 'app-weather',
-  templateUrl: './weather.component.html',
-  styleUrls: ['./weather.component.css']
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
 })
-export class WeatherComponent implements OnInit {
+export class AboutComponent implements OnInit {
     data = {
     'temp': [],
   };
