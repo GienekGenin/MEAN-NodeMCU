@@ -4,7 +4,7 @@ import {SensorService} from '../sensor.service';
 @Component({
   selector: 'app-weather',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
+  styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit {
     data = {

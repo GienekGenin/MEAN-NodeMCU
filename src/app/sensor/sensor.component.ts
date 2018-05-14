@@ -5,7 +5,7 @@ import {AmChartsService, AmChart} from '@amcharts/amcharts3-angular';
 @Component({
   selector: 'app-sensor',
   templateUrl: './sensor.component.html',
-  styleUrls: ['./sensor.component.css']
+  styleUrls: ['./sensor.component.scss']
 })
 export class SensorComponent implements OnInit {
   data = {
